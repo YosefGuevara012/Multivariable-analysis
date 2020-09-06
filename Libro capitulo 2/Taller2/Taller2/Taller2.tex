@@ -1,0 +1,75 @@
+\documentclass{article}
+
+\usepackage{Sweave}
+\begin{document}
+\input{Taller2-concordance}
+
+
+\begin{Schunk}
+\begin{Sinput}
+> # cargar FactoClass
+> library (FactoClass)
+> # carga la Data de las razas de perro
+> data(DogBreeds)
+> 
+\end{Sinput}
+\end{Schunk}
+
+\section{}
+\begin{Schunk}
+\begin{Sinput}
+> round(chisq.carac(DogBreeds[,-7],DogBreeds[,7]),3)
+\end{Sinput}
+\begin{Soutput}
+       chi2 dfr  pval  tval  phi2
+WEIG 24.407   4 0.000 3.822 0.904
+AFFE 14.761   2 0.001 3.228 0.547
+SIZE 16.354   4 0.003 2.797 0.606
+\end{Soutput}
+\begin{Sinput}
+> 
+\end{Sinput}
+\end{Schunk}
+
+\section{}
+
+\begin{Schunk}
+\begin{Sinput}
+> # active variables
+> DB.act <- DogBreeds[-7];
+> DB.function <- subset(DogBreeds,select=7);
+>  #  nominal variables
+> 
+> cluster.carac(DB.act,DB.function,"nominales",2.0) 
+\end{Sinput}
+\begin{Soutput}
+FUNC: com
+         Test.Value p.Value Class.Cat Cat.Class Global Weight
+AFFE.hig      3.849   0.000      71.4       100   51.9     14
+WEIG.lig      3.308   0.001      87.5        70   29.6      8
+SIZE.sma      2.866   0.004      85.7        60   25.9      7
+SIZE.lar     -3.541   0.000       6.7        10   55.6     15
+AFFE.low     -3.849   0.000       0.0         0   48.1     13
+------------------------------------------------------------ 
+FUNC: hun
+         Test.Value p.Value Class.Cat Cat.Class Global Weight
+WEIG.med      2.621   0.009      57.1      88.9   51.9     14
+AFFE.low      2.082   0.037      53.8      77.8   48.1     13
+AFFE.hig     -2.082   0.037      14.3      22.2   51.9     14
+------------------------------------------------------------ 
+FUNC: uti
+         Test.Value p.Value Class.Cat Cat.Class Global Weight
+WEIG.hea      3.392   0.001     100.0      62.5   18.5      5
+SIZE.lar      2.978   0.003      53.3     100.0   55.6     15
+AGGR.hig      2.530   0.011      53.8      87.5   48.1     13
+WEIG.lig     -2.120   0.034       0.0       0.0   29.6      8
+SPEE.med     -2.120   0.034       0.0       0.0   29.6      8
+AGGR.low     -2.530   0.011       7.1      12.5   51.9     14
+\end{Soutput}
+\begin{Sinput}
+> 
+\end{Sinput}
+\end{Schunk}
+
+
+\end{document}

@@ -1,0 +1,61 @@
+\documentclass{article}
+
+\usepackage{Sweave}
+\begin{document}
+\input{Ejemplos2PDF-concordance}
+
+\begin{Schunk}
+\begin{Sinput}
+> library ( FactoClass ) # cargar FactoClass ;
+> data ( admi ) # cargar la tabla ;
+> # 6 barplots y etiquetas de las categorias en forma horizontal
+> 
+> # manualmente cuadrar la ventana Plots
+> # dev . print ( device = pdf) # grabar la grafica como Rplots . pdf
+> 
+> table ( admi $edad , admi $ estr )->tc;
+> tabtc <-cbind (tc , totF = rowSums (tc ));
+> tabtc <-rbind (tabtc , totC = colSums ( tabtc ));
+> xtable ( cbind (tabtc , round ( tabtc / 445*100 ,1)) , digits =c(rep (0 ,5) ,
++                                                                  rep (1 ,4)));
+\end{Sinput}
+\begin{Soutput}
+% latex table generated in R 3.6.1 by xtable 1.8-4 package
+% Sat Sep 05 12:16:21 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrrrrrr}
+  \hline
+ & bajo & medio & alto & totF & bajo & medio & alto & totF \\ 
+  \hline
+a16m & 44 & 47 & 27 & 118 & 9.9 & 10.6 & 6.1 & 26.5 \\ 
+  a17 & 58 & 74 & 39 & 171 & 13.0 & 16.6 & 8.8 & 38.4 \\ 
+  a18 & 22 & 26 & 8 & 56 & 4.9 & 5.8 & 1.8 & 12.6 \\ 
+  a19M & 55 & 38 & 7 & 100 & 12.4 & 8.5 & 1.6 & 22.5 \\ 
+  totC & 179 & 185 & 81 & 445 & 40.2 & 41.6 & 18.2 & 100.0 \\ 
+   \hline
+\end{tabular}
+\end{table}
+\end{Soutput}
+\begin{Sinput}
+>   
+\end{Sinput}
+\end{Schunk}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrrrrrr}
+\hline
+& bajo & medio & alto & totF & bajo & medio & alto & totF \\
+\hline
+a16m & 44 & 47 & 27 & 118 & 9.9 & 10.6 & 6.1 & 26.5 \\
+a17 & 58 & 74 & 39 & 171 & 13.0 & 16.6 & 8.8 & 38.4 \\
+a18 & 22 & 26 & 8 & 56 & 4.9 & 5.8 & 1.8 & 12.6 \\
+a19M & 55 & 38 & 7 & 100 & 12.4 & 8.5 & 1.6 & 22.5 \\
+totC & 179 & 185 & 81 & 445 & 40.2 & 41.6 & 18.2 & 100.0 \\
+\hline
+\end{tabular}
+\end{table}
+
+
+\end{document}

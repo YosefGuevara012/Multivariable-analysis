@@ -1,0 +1,42 @@
+\documentclass{article}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+
+<<>>=
+
+# cargar FactoClass
+library (FactoClass)
+# carga la Data de las razas de perro
+data(DogBreeds)
+
+@
+
+\section{}
+<<>>=
+
+round(chisq.carac(DogBreeds[,-7],DogBreeds[,7]),3)
+
+@
+
+\section{}
+
+<<>>=
+
+# active variables
+DB.act <- DogBreeds[-7];
+
+DB.function <- subset(DogBreeds,select=7);
+
+ #  nominal variables
+
+x <- cluster.carac(DB.act,DB.function,"nominales",2.0) 
+
+x$com$Test.Value
+
+x
+@
+
+
+\end{document}
