@@ -126,10 +126,18 @@ if (valores_y_vectores_propios$values[1] > valores_y_vectores_propios$values[2])
 # como se reduce una dimension lo unico que hace falta es proyectar los valores X
 # sobre el eje x, con Valores en Y iguales a 0 para cada coordenada en X
 
-Vector_de_ceros <- numeric(10)
+proyecion_sobre_x <- c()
+
+for (i in 1:10){
+  
+  proyecion_sobre_x <- ((Y[,1]*1) + (Y[,2]*0))
+  
+}
 
 # se imprime la reduccion de la informacion
 # proyectadndo los valores de la tabala inicial al eje x
+
+
 
 plot(Y[,1],Vector_de_ceros, main = "Dimensionalidad reducida", xlab = " Datos proyectados al eje x", ylab = "")
 

@@ -1,0 +1,477 @@
+\documentclass{article}
+
+\usepackage{Sweave}
+\begin{document}
+\input{Cafe-concordance}
+
+\section{Visualización de Datos}
+Código cargar los datos y construir la gráfica 3D con los cafés e imprimir la
+matriz Y 
+
+\begin{Schunk}
+\begin{Sinput}
+> library ( FactoClass ); 
+> data ( cafe ); 
+> Y <- cafe [1:10 ,1:3];
+> par ( las =1); # grafica ;
+> Y3D <- scatterplot3d (Y, main ="Y",type ="h",color =" black ",box=FALSE ,las =1);
+> Y3D $ points3d (Y, pch =1);
+> addgrids3d (Y, grid = c("xy","xz","yz"));
+> cord2d <-Y3D$xyz.convert (Y) # convertir cordenadas 3D a 2D;
+> # poner etiquetas ;
+> # text ( cord2d , labels = rownames (Y), cex =0.8 , col=" black ",pos =3);
+> # xtable (Y, digits =c(0 ,0 ,1 ,0)) # para tabular de LaTeX ;
+> 
+\end{Sinput}
+\end{Schunk}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+\hline
+& Color & DA & EA \\
+\hline
+ExCl & 298 & 385.1 & 25 \\
+C40M & 361 & 481.3 & 41 \\
+C40C & 321 & 422.6 & 40 \\
+C20M & 335 & 444.3 & 33 \\
+C20C & 314 & 368.7 & 32 \\
+ExOs & 186 & 346.6 & 28 \\
+O40M & 278 & 422.6 & 43 \\
+O40C & 238 & 403.0 & 42 \\
+O20M & 226 & 368.7 & 36 \\
+O20C & 210 & 368.7 & 35 \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Calculo del Centro de Gravedad}
+Código para calcular y adicionar el centro de gravedad a la figura
+
+\begin{Schunk}
+\begin{Sinput}
+> g <- colMeans (Y) # centro de gravedad ;
+> Y3D$points3d (t(g), pch =19 , col=" darkgreen ",type = "h");
+> text ( Y3D$xyz.convert (t(g)), labels ="g",pos =3, col=" black ", cex =1.3);
+> 
+\end{Sinput}
+\end{Schunk}
+
+\section{Centro de datos}
+Centrar los datos, graficarlos en 3D e imprimir la matriz Yc
+
+\begin{Schunk}
+\begin{Sinput}
+> n <- 10
+> par ( las =1);
+> unos <-rep (1,n); # vector de n unos
+> Yc <- Y - unos%*%t(g); 
+> # grafica de datos centrados
+> 
+> Yc3D <- scatterplot3d (Yc , main ="Yc",type ="h",color =" black ", box =FALSE , las =1);
+> Yc3D$points3d (Yc , pch =1);
+> addgrids3d (Yc , grid =c("xy", "xz", "yz" ));
+> text ( Yc3D$xyz.convert (Yc), labels = rownames (Yc),cex =0.8 , col =" black ",pos =3);
+> Yc3D $ points3d (t(c(0 ,0 ,0)) , pch =19 , col =" black ",type = "h");
+> text ( Yc3D$xyz.convert (t(c(0 ,0 ,0))) , labels ="0",pos =3, col =" black ",cex =1.3);
+> 
+> 
+\end{Sinput}
+\end{Schunk}
+
+\section{Distancia al centro de graverdad}
+
+\begin{Schunk}
+\begin{Sinput}
+> Y_dist <- round(as.dist(dist(Y)),0);
+> Y_dist
+\end{Sinput}
+\begin{Soutput}
+     ExCl C40M C40C C20M C20C ExOs O40M O40C O20M
+C40M  116                                        
+C40C   46   71                                   
+C20M   70   46   27                              
+C20C   24  122   55   78                         
+ExOs  118  221  155  178  130                    
+O40M   46  102   43   62   66  120               
+O40C   65  146   85  106   84   78   45          
+O20M   75  176  109  133   88   46   75   37     
+O20C   90  188  123  146  104   33   87   45   16
+\end{Soutput}
+\begin{Sinput}
+> 
+\end{Sinput}
+\end{Schunk}
+
+\section{Calculo de matriz de varianzas}
+
+Multuplica la matriz de
+
+\begin{Schunk}
+\begin{Sinput}
+> par ( las =1) # etiquetas de los dos ejes sean horizontales ;
+> # Calculo de la matriz de Varianzas y covarianzas
+> 
+> V <-t(Yc) %*% as.matrix (Yc)/n;
+> V
+\end{Sinput}
+\begin{Soutput}
+         Color       DA     EA
+Color 3105.810 1738.388  60.95
+DA    1738.388 1560.188 129.36
+EA      60.950  129.360  33.45
+\end{Soutput}
+\begin{Sinput}
+> 
+> # V = var (Y)*(n -1)/n; # Se usa porque R toma los datos como una muestra y no una población
+\end{Sinput}
+\end{Schunk}
+
+\section{Calculo de la matriz diagonal}
+
+Toma lo valores de la diagonal de la matriz de varianzas
+
+\begin{Schunk}
+\begin{Sinput}
+> # Diagonalización de la Matriz
+> 
+> Dsigma <- diag ( sqrt ( diag (V ))); 
+> round (diag(Dsigma ) ,1);
+\end{Sinput}
+\begin{Soutput}
+[1] 55.7 39.5  5.8
+\end{Soutput}
+\begin{Sinput}
+> 
+\end{Sinput}
+\end{Schunk}
+
+\section{matriz normalizada X}
+
+\begin{Schunk}
+\begin{Sinput}
+> X <-as.matrix (Yc) %*% solve (Dsigma); 
+> colnames (X) <- colnames (Y);
+> X3D <- scatterplot3d (X, main ="X",type ="h",box= FALSE );
+> X3D$points3d (Yc , pch =1);
+> addgrids3d (X, grid =c("xy","xz","yz" ));
+> text ( X3D $ xyz.convert (X), labels = rownames (X),cex =0.8 , pos =3);
+> X3D $ points3d (t(c(0 ,0 ,0)) , pch =19 , col=" black ",type ="h");
+> # text ( X3D $ xyz.convert (t(c(0 ,0 ,0))) , labels ="0",pos =3, col=" black ",cex =0.8);
+> # xtable (X, digits = rep (1 ,4)) # tabla para LaTeX ;
+> 
+\end{Sinput}
+\end{Schunk}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+\hline
+& Color & DA & EA \\
+\hline
+ExCl & 0.4 & -0.4 & -1.8 \\
+C40M & 1.5 & 2.0 & 1.0 \\
+C40C & 0.8 & 0.5 & 0.8 \\
+C20M & 1.0 & 1.1 & -0.4 \\
+C20C & 0.7 & -0.8 & -0.6 \\
+ExOs & -1.6 & -1.4 & -1.3 \\
+O40M & 0.0 & 0.5 & 1.3 \\
+O40C & -0.7 & 0.0 & 1.1 \\
+O20M & -0.9 & -0.8 & 0.1 \\
+O20C & -1.2 & -0.8 & -0.1 \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Distancias de los datos estandarizadso}
+Distancias entre cafés cuando los datos están estandarizados(centrados y reducidos)
+
+\begin{Schunk}
+\begin{Sinput}
+> X<-scale(Y); 
+> X_dist <- round(as.dist(dist(X)),1);
+> X_dist
+\end{Sinput}
+\begin{Soutput}
+     ExCl C40M C40C C20M C20C ExOs O40M O40C O20M
+C40M  3.7                                        
+C40C  2.6  1.6                                   
+C20M  2.0  1.6  1.3                              
+C20C  1.2  3.2  1.8  1.9                         
+ExOs  2.2  4.9  3.5  3.6  2.3                    
+O40M  3.1  2.0  0.9  2.0  2.3  3.4               
+O40C  3.0  2.8  1.5  2.4  2.2  2.8  0.8          
+O20M  2.2  3.6  2.2  2.6  1.6  1.6  1.9  1.3     
+O20C  2.3  3.9  2.4  2.8  1.8  1.3  2.2  1.5  0.3
+\end{Soutput}
+\end{Schunk}
+
+\section{Obtencion de los valores y vectores propios}
+
+\begin{Schunk}
+\begin{Sinput}
+> des <-eigen (V); 
+> des # calculo de valores y vectores propios
+\end{Sinput}
+\begin{Soutput}
+eigen() decomposition
+$values
+[1] 4238.94326  444.23103   16.27412
+
+$vectors
+           [,1]       [,2]        [,3]
+[1,] 0.83785566  0.5409101  0.07358114
+[2,] 0.54512571 -0.8219057 -0.16525428
+[3,] 0.02891094 -0.1785702  0.98350233
+\end{Soutput}
+\begin{Sinput}
+> lambda <-des$values
+> U <- des$vectors # matriz con vectores propios en columnas
+> rownames(U) <- rownames (V)
+> colnames(U) <- c(" Eje1 "," Eje2 "," Eje3 "); round (U ,3)
+\end{Sinput}
+\begin{Soutput}
+       Eje1   Eje2   Eje3 
+Color  0.838  0.541  0.074
+DA     0.545 -0.822 -0.165
+EA     0.029 -0.179  0.984
+\end{Soutput}
+\begin{Sinput}
+> lambda
+\end{Sinput}
+\begin{Soutput}
+[1] 4238.94326  444.23103   16.27412
+\end{Soutput}
+\begin{Sinput}
+> U
+\end{Sinput}
+\begin{Soutput}
+           Eje1       Eje2        Eje3 
+Color 0.83785566  0.5409101  0.07358114
+DA    0.54512571 -0.8219057 -0.16525428
+EA    0.02891094 -0.1785702  0.98350233
+\end{Soutput}
+\begin{Sinput}
+> 
+\end{Sinput}
+\end{Schunk}
+
+\section{}
+
+\begin{Schunk}
+\begin{Sinput}
+> F <- X %*% U
+> round ( sort (F[ ,1]) ,2)
+\end{Sinput}
+\begin{Soutput}
+ ExOs  O20C  O20M  O40C  ExCl  C20C  O40M  C40C  C20M  C40M 
+-2.04 -1.38 -1.15 -0.50  0.04  0.09  0.33  0.93  1.38  2.28 
+\end{Soutput}
+\begin{Sinput}
+> 
+\end{Sinput}
+\end{Schunk}
+
+\section{Código para obtener el primer plano factorial y la tabla}
+
+\begin{Schunk}
+\begin{Sinput}
+> F <- X %*% U; 
+> round (F ,2) # coordenadas sobre los nuevos ejes
+\end{Sinput}
+\begin{Soutput}
+      Eje1   Eje2   Eje3 
+ExCl   0.04   0.82  -1.60
+C40M   2.28  -0.97   0.67
+C40C   0.93  -0.15   0.70
+C20M   1.38  -0.24  -0.50
+C20C   0.09   1.09  -0.39
+ExOs  -2.04   0.46  -1.11
+O40M   0.33  -0.63   1.13
+O40C  -0.50  -0.58   0.99
+O20M  -1.15   0.16   0.15
+O20C  -1.38   0.04  -0.04
+\end{Soutput}
+\begin{Sinput}
+> plot (F[ ,1:2] , las =1, asp =1) # plano 12
+> text (F[ ,1:2] , label = rownames (F), col=" black ",pos =2) # etiquetas
+> abline (h=0,v=0, col =" darkgrey ") # ejes
+> rowSums (F^2)-> d2;d2 # distancias
+\end{Sinput}
+\begin{Soutput}
+    ExCl     C40M     C40C     C20M     C20C     ExOs     O40M     O40C 
+3.246622 6.578011 1.378697 2.226649 1.340566 5.614494 1.779107 1.572724 
+    O20M     O20C 
+1.359404 1.903726 
+\end{Soutput}
+\begin{Sinput}
+> 1/n*F^2 %*%diag (1/ lambda )*100 -> cont # contribuciones
+> F^2/d2*100 -> cos2 # cosenos cuadrados
+> # tabla de ayudas para la interpretacion
+> Ayu <-cbind ( dis2 =d2 ,F1=F[ ,1] , F2=F[ ,2] , cont1 = cont [,1] , cont2 =
++ cont [,2] , cos21 = cos2 [ ,1] , cos22 = cos2 [,2] ,
++ cosp = rowSums ( cos2 [ ,1:2]))
+> round (Ayu ,2) # ayudas en consola
+\end{Sinput}
+\begin{Soutput}
+     dis2    F1    F2 cont1 cont2 cos21 cos22  cosp
+ExCl 3.25  0.04  0.82  0.00  0.02  0.06 20.75 20.81
+C40M 6.58  2.28 -0.97  0.01  0.02 78.87 14.21 93.08
+C40C 1.38  0.93 -0.15  0.00  0.00 63.26  1.57 64.83
+C20M 2.23  1.38 -0.24  0.00  0.00 86.08  2.62 88.70
+C20C 1.34  0.09  1.09  0.00  0.03  0.61 88.10 88.71
+ExOs 5.61 -2.04  0.46  0.01  0.00 74.38  3.79 78.17
+O40M 1.78  0.33 -0.63  0.00  0.01  6.30 22.38 28.68
+O40C 1.57 -0.50 -0.58  0.00  0.01 15.71 21.62 37.32
+O20M 1.36 -1.15  0.16  0.00  0.00 96.57  1.87 98.43
+O20C 1.90 -1.38  0.04  0.00  0.00 99.84  0.09 99.93
+\end{Soutput}
+\begin{Sinput}
+> #xtable (Ayu , digits = rep (2 ,9)) # salida para LaTeX
+> 
+\end{Sinput}
+\end{Schunk}
+
+% latex table generated in R 3.6.1 by xtable 1.8-4 package
+% Sun Sep 13 19:22:39 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrrrrrr}
+\hline
+& dis2 & F1 & F2 & cont1 & cont2 & cos21 & cos22 & cosp \\
+\hline
+ExCl & 3.25 & 0.04 & 0.82 & 0.00 & 0.02 & 0.06 & 20.75 & 20.81 \\
+C40M & 6.58 & 2.28 & -0.97 & 0.01 & 0.02 & 78.87 & 14.21 & 93.08 \\
+C40C & 1.38 & 0.93 & -0.15 & 0.00 & 0.00 & 63.26 & 1.57 & 64.83 \\
+C20M & 2.23 & 1.38 & -0.24 & 0.00 & 0.00 & 86.08 & 2.62 & 88.70 \\
+C20C & 1.34 & 0.09 & 1.09 & 0.00 & 0.03 & 0.61 & 88.10 & 88.71 \\
+ExOs & 5.61 & -2.04 & 0.46 & 0.01 & 0.00 & 74.38 & 3.79 & 78.17 \\
+O40M & 1.78 & 0.33 & -0.63 & 0.00 & 0.01 & 6.30 & 22.38 & 28.68 \\
+O40C & 1.57 & -0.50 & -0.58 & 0.00 & 0.01 & 15.71 & 21.62 & 37.32 \\
+O20M & 1.36 & -1.15 & 0.16 & 0.00 & 0.00 & 96.57 & 1.87 & 98.43 \\
+O20C & 1.90 & -1.38 & 0.04 & 0.00 & 0.00 & 99.84 & 0.09 & 99.93 \\
+\hline
+\end{tabular}
+\end{table}
+
+
+\section{Calcular las coordenadas factoriales de los dos cafés comerciales
+y su proyección sobre el primer plano factorial}
+
+\begin{Schunk}
+\begin{Sinput}
+> comer <-as.matrix ( cafe [11:12 ,1:3]);
+> comer
+\end{Sinput}
+\begin{Soutput}
+     Color    DA EA
+Com1   221 413.3 27
+Com2   264 400.9 23
+\end{Soutput}
+\begin{Sinput}
+> comc <-comer - rep (1 ,2) %*%t(g); 
+> comc # centrado
+\end{Sinput}
+\begin{Soutput}
+     Color    DA    EA
+Com1 -55.7 12.14  -8.5
+Com2 -12.7 -0.26 -12.5
+\end{Soutput}
+\begin{Sinput}
+> comcr <- comc %*%solve ( Dsigma ) # reducido
+> colnames ( comcr ) <- colnames ( comer ); comcr
+\end{Sinput}
+\begin{Soutput}
+          Color           DA        EA
+Com1 -0.9994654  0.307347839 -1.469674
+Com2 -0.2278853 -0.006582408 -2.161285
+\end{Soutput}
+\begin{Sinput}
+> Fsup <- comcr %*%U; 
+> Fsup
+\end{Sinput}
+\begin{Soutput}
+          Eje1       Eje2      Eje3 
+Com1 -0.7123542 -0.5307919 -1.569760
+Com2 -0.2570080  0.2680857 -2.141309
+\end{Soutput}
+\begin{Sinput}
+> # primer plano factorial
+> plot (F[ ,1:2] , las =1, asp =1)
+> text (F[ ,1:2] , label = rownames (F), col=" black ",pos =1)
+> abline (h=0,v=0, col=" darkgrey ")
+> points (Fsup ,col =" black ",pch =20) # cafes comerciales
+> text (Fsup , labels =c(" Com1 "," Com2 "), col=" darkgreen ",pos =2)
+\end{Sinput}
+\end{Schunk}
+
+\section{Código para calcular las coordenadas de las categorías de contaminación y
+proyectarlas sobre el primer plano factorial}
+
+\begin{Schunk}
+\begin{Sinput}
+> conta <-factor (c(" exce "," maiz "," ceba "," maiz "," ceba "," exce ",
++ " maiz "," ceba "," maiz "," ceba "))
+> centroids (F, conta )$ centroids -> Fconta ; Fconta
+\end{Sinput}
+\begin{Soutput}
+            Eje1        Eje2       Eje3 
+ ceba  -0.2128594  0.09945118  0.3161817
+ exce  -0.9999009  0.64113648 -1.3552319
+ maiz   0.7128099 -0.42001942  0.3614343
+\end{Soutput}
+\begin{Sinput}
+> points ( Fconta ,col =" brown ",pch =20)
+> text ( Fconta , col=" brown ",labels = rownames ( Fconta ),pos =2)
+> 
+\end{Sinput}
+\end{Schunk}
+
+\section{}
+
+\begin{Schunk}
+\begin{Sinput}
+> G <-U %*% diag(sqrt(lambda)); 
+> G <- G / G # G <- cor (Y,F)
+> colnames (G) <-c("G1","G2","G3");
+> G3D <- scatterplot3d (G, main ="G")
+> coord <- G3D$xyz.convert(G)
+> text (coord , labels = rownames (G), cex =0.8 , col=" black ",pos =4)
+> G3D$ plane (0 ,0 ,0 , col =" darkgrey ")
+> G3D$ points3d (t(c(0 ,0 ,0)) , pch =19 , col=" black ")
+> cero <- G3D$xyz.convert (0, 0, 0)
+> for (eje in 1:3) {
++ arrows ( cero $x, cero $y, coord $x[ eje ], coord $y[eje ], lwd = 2,
++ length = 0.1)
++ }
+> # dev . print ( device =xfig , file =" cafeEspera .fig ")# grafica en xfig
+> 
+> s.corcircle (G, clabel =2);
+> # proyeccion de nota como variable ilustrativa
+> 
+> Nota <- cafe [1:10 ,16]; Nota ;
+\end{Sinput}
+\begin{Soutput}
+ [1] 7.46 6.24 6.12 6.04 6.22 7.40 5.90 6.94 6.90 7.16
+\end{Soutput}
+\begin{Sinput}
+> Fnota <- cor (Nota ,F); Fnota ;
+\end{Sinput}
+\begin{Soutput}
+          Eje1      Eje2       Eje3 
+[1,] -0.7328713 0.4366652 -0.5836551
+\end{Soutput}
+\begin{Sinput}
+> arrows (0,0 , Fnota [1] , Fnota [2] , col =" black ",angle =10 , lty =2);
+> text (Fnota ," Nota ",col =" black ",pos =1, cex =2, font =3);
+> 
+> 
+> 
+\end{Sinput}
+\end{Schunk}
+
+
+
+
+
+\end{document}
