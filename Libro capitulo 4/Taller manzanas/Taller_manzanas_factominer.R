@@ -19,6 +19,17 @@ nj <- rowSums(bta)
 total_nij <- sum(ni)
 
 
+# Generacion matrix K
+
+K <- Bogota[,-1]
+K$Total_R <- nj
+
+suma_col <- append(suma_col, sum(ni))
+
+K <- rbind(K,suma_col)
+
+rownames(K) <- c(rownames(Bogota[,-1]),"Total_C")
+
 # Calculo del marginal de la distribución
 
 
@@ -111,36 +122,30 @@ barplot(Values, main = "Perfiles Columna", names.arg = estratos, xlab = "Localid
 # Add the legend to the chart
 legend("topright", localidades, cex = 0.5, fill = colors)
 
-# MC_PC 
-
-barplot(MC_PC/100, main = "Marginal C" , xlab = "",  ylab = "Porcentaje de manzanas", col = colors, cex.axis=0.7, cex.names=0.5, las=2)
 
 # Histograma perfil fila
 
 # Create the input vectors.
-# colors = c("antiquewhite1","aquamarine1","azure1","burlywood3","cadetblue1","coral1",
-#           "cornflowerblue","darkolivegreen1","darkorchid1","goldenrod2","hotpink1","lightgoldenrod4",
-#           "lightgreen", "lightskyblue1","slateblue2","seagreen1","mistyrose3","gray42","darkorange")
 
 colors <- brewer.pal(n = 6, name = 'Dark2')
-estratos <- colnames(Bogota)
-localidades <- rownames(Bogota)
+estratos <- colnames(Bogota[,-1])
+localidades <- rownames(Bogota[ordep,])
 
 # Create the matrix of the values.
 
 Values <- PF/100
 
+# Creacion de grafica del promedio de los perfiles ordenados
+
+acs_facto <-dudi.coa (Bogota[,-1], scannf =FALSE ,nf =3)
+ordep <-order (acs_facto$li[ ,1]);
 # Create the bar chart
-barplot(t(Values), main = "Perfiles fila", names.arg = localidades, xlab = "Estratos", ylab = "Localidades", col = colors, cex.axis=0.7, cex.names=0.5, horiz = TRUE, las=2)
+barplot(t(Values[ordep,]), main = "Perfiles fila", names.arg = localidades, xlab = "Estratos", ylab = "Localidades", col = colors, cex.axis=0.5, cex.names=0.5, horiz = TRUE, las=2)
 
 # Add the legend to the chart
-# legend("topright", estratos, cex = 0.5, fill = colors)
+legend("topright", estratos, cex = 0.5, fill = colors)
 
-# histograma margin_C pF
-
-barplot(MC_PF/100, main = "Marginal C" , xlab = "",  ylab = "Localidades", col = colors, cex.axis=0.7, cex.names=0.5, las=2)
-
-ACS_NSTR <- CA(Bogota, ncp = 5, row.sup = NULL, col.sup = NULL,quanti.sup=NULL, quali.sup = NULL, graph = TRUE,axes = c(1,2), row.w = NULL, excl=NULL)
+# Analisis de correspondencia simple usando FactoMiner
 
 ACS <- CA(Bogota[,-1])
 
@@ -149,7 +154,6 @@ plot(ACS, cex = 0.7, title = "Mapa del Analisis de Correspondencias")
 plot(ACS, cex= 0.7, selectRow = "cos2 0.7", selectCol = "cos2 0.7", title = "Variables mejor representadas")
 
 plot(ACS, cex= 0.7, selectRow = "contrib 4", selectCol = "contrib 4", title = "Variables mas contribuyen")
-
 
 
 
@@ -164,3 +168,6 @@ ACS.hcpc <- HCPC(ACS, cluster.CA = "columns")
 # Agrupamiento de por localidaes
 
 ACS.hcpc <- HCPC(ACS, cluster.CA = "rows") 
+
+
+

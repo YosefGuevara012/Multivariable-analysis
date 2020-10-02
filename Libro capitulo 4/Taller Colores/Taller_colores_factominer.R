@@ -69,14 +69,34 @@ colnames(M) <- dim_names
 
 # Dimension de mejor representacion de la matrix
 
-Blue <- sort(M[1,], decreasing=TRUE);Blue
-Red <- sort(M[2,], decreasing=TRUE);Red
-Yellow <- sort(M[3,], decreasing=TRUE);Yellow
-White <- sort(M[4,], decreasing=TRUE);White
-Grey <- sort(M[5,], decreasing=TRUE);Grey
-Pink <- sort(M[6,], decreasing=TRUE);Pink
-Brown <- sort(M[7,], decreasing=TRUE);Brown
-Purple <- sort(M[9,], decreasing=TRUE);Purple
-Black <- sort(M[9,], decreasing=TRUE);Black
-Orange <- sort(M[10,], decreasing=TRUE);Orange
+Blue <- round(sort(M[1,], decreasing=TRUE),2);Blue
+plot(ACS, cex=0.7, axes=c(3,8), title="ACS - Color Azul DIM 3 y DIM 8", selectRow = "cos2 0.9", selectCol = "cos2 0.64")
 
+Red <- round(sort(M[2,], decreasing=TRUE),2);Red
+plot(ACS, cex=0.7, axes=c(1,6), title="ACS - Color Rojo DIM 1 y DIM 6", selectRow = "cos2 1", selectCol = "cos2 8.926268e-01")
+
+
+Yellow <- round(sort(M[3,], decreasing=TRUE),2);Yellow
+plot(ACS, cex=0.7, axes=c(1,5), title="ACS - Color Amarillo DIM 1 y DIM 5", selectRow = "cos2 0.91", selectCol = "cos2 0.91")
+
+White <- round(sort(M[4,], decreasing=TRUE),2);White
+Pink <- round(sort(M[6,], decreasing=TRUE),2);Pink
+plot(ACS, cex=0.7, axes=c(3,4), title="ACS - Color Rosado y Blanco, DIM 3 y DIM 4", selectRow = "cos2 1", selectCol = "cos2 0.70")
+
+Grey <- round(sort(M[5,], decreasing=TRUE),2);Grey
+plot(ACS, cex=0.7, axes=c(2,10), title="ACS - Color Gris DIM 2 y DIM 10", selectRow = "cos2 1", selectCol = "cos2 0.56")
+
+Brown <- round(sort(M[7,], decreasing=TRUE),2);Brown
+plot(ACS, cex=0.7, axes=c(7,9), title="ACS - Color Café DIM 7 y DIM 9", selectRow = "cos2 1", selectCol = "cos2 0.50")
+
+Purple <- round(sort(M[8,], decreasing=TRUE),2);Purple
+plot(ACS, cex=0.7, axes=c(2,7), title="ACS - Color Purpura DIM 2 y DIM 7", selectRow = "cos2 1", selectCol = "cos2 0.65")
+
+Black <- round(sort(M[9,], decreasing=TRUE),2);Black
+plot(ACS, cex=0.7, axes=c(2,9), title="ACS - Color Negro DIM 2 y DIM 9", selectRow = "cos2 1", selectCol = "cos2 0.65")
+
+Orange <- round(sort(M[10,], decreasing=TRUE),2);Orange
+plot(ACS, cex=0.7, axes=c(1,6), title="ACS - Color Naranja DIM 1 y DIM 6", selectRow = "cos2 1", selectCol = "cos2 0.94")
+
+Verde <- round(sort(M[11,], decreasing=TRUE),2);Verde
+plot(ACS, cex=0.7, axes=c(2,4), title="ACS - Color Verde DIM 2 y DIM 4", selectRow = "cos2 1", selectCol = "cos2 0.57")
