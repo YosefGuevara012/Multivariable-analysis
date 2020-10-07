@@ -111,13 +111,131 @@ plot(ACS, cex=0.7, axes=c(2,4), title="ACS - Color Verde DIM 2 y DIM 4", selectR
 
 ACS.hcpc <- HCPC(ACS, cluster.CA = "columns", description = F) 
 
+#Azul
 
 colors <- brewer.pal(n = 12, name = 'Paired')
 temp <- sort(ColorAdjective$BLUE[ColorAdjective$BLUE>0], decreasing = T)
-
 adjetivos <- rownames(ColorAdjective[order(ColorAdjective$BLUE, decreasing = T),])[1:length(temp)]
+adjetivos <- c( "otros",adjetivos[1:8])
+temp <- c(sum(temp[9:length(temp)]),temp[1:8])
+
+# Create the bar chart
+barplot(temp, main = "Perfil de frecuencia adjetivos asociados al color Azul", names.arg = adjetivos, xlab = "Adjetivos", ylab = "Frecuencia del Adjetivo", col = colors, cex.axis=0.7, cex.names=0.7, las=2)
+
+
+#Rojo
+
+temp <- sort(ColorAdjective$RED[ColorAdjective$RED>0], decreasing = T)
+adjetivos <- rownames(ColorAdjective[order(ColorAdjective$RED, decreasing = T),])[1:length(temp)]
+adjetivos <- c( "otros",adjetivos[1:7])
+temp <- c(sum(temp[8:length(temp)]),temp[1:7])
 
 
 # Create the bar chart
-barplot(temp, main = "Perfiles de frecuencia de valores asociados Color Azul", names.arg = adjetivos, xlab = "Adjetivos", ylab = "Frecuencia Color", col = colors, cex.axis=0.7, cex.names=0.5, las=2)
+barplot(temp, main = "Perfil de frecuencia adjetivos asociados al color Rojo", names.arg = adjetivos, xlab = "Adjetivos", ylab = "Frecuencia del Adjetivo", col = colors, cex.axis=0.7, cex.names=0.7, las=2)
+
+#Amarillo
+
+temp <- sort(ColorAdjective$YELL[ColorAdjective$YELL>0], decreasing = T)
+adjetivos <- rownames(ColorAdjective[order(ColorAdjective$YELL, decreasing = T),])[1:length(temp)]
+adjetivos <- c( "otros",adjetivos[1:8])
+temp <- c(sum(temp[9:length(temp)]),temp[1:8])
+
+
+# Create the bar chart
+barplot(temp, main = "Perfil de frecuencia adjetivos asociados al color Amarillo", names.arg = adjetivos, xlab = "Adjetivos", ylab = "Frecuencia del Adjetivo", col = colors, cex.axis=0.7, cex.names=0.7, las=2)
+
+#Blanco
+
+temp <- sort(ColorAdjective$WHIT[ColorAdjective$WHIT>0], decreasing = T)
+adjetivos <- rownames(ColorAdjective[order(ColorAdjective$WHIT, decreasing = T),])[1:length(temp)]
+adjetivos <- c( "otros",adjetivos[1:8])
+temp <- c(sum(temp[9:length(temp)]),temp[1:8])
+
+
+# Create the bar chart
+barplot(temp, main = "Perfil de frecuencia adjetivos asociados al color Blanco", names.arg = adjetivos, xlab = "Adjetivos", ylab = "Frecuencia del Adjetivo", col = colors, cex.axis=0.7, cex.names=0.7, las=2)
+
+
+
+#Gris
+
+temp <- sort(ColorAdjective$GREY[ColorAdjective$GREY>0], decreasing = T)
+adjetivos <- rownames(ColorAdjective[order(ColorAdjective$GREY, decreasing = T),])[1:length(temp)]
+adjetivos <- c( "otros",adjetivos[1:8])
+temp <- c(sum(temp[9:length(temp)]),temp[1:8])
+
+
+# Create the bar chart
+barplot(temp, main = "Perfil de frecuencia adjetivos asociados al color Gris", names.arg = adjetivos, xlab = "Adjetivos", ylab = "Frecuencia del Adjetivo", col = colors, cex.axis=0.7, cex.names=0.7, las=2)
+
+
+#Rosado
+
+temp <- sort(ColorAdjective$PINK[ColorAdjective$PINK>0], decreasing = T)
+adjetivos <- rownames(ColorAdjective[order(ColorAdjective$PINK, decreasing = T),])[1:length(temp)]
+adjetivos <- c( "otros",adjetivos[1:9])
+temp <- c(sum(temp[10:length(temp)]),temp[1:9])
+
+
+# Create the bar chart
+barplot(temp, main = "Perfil de frecuencia adjetivos asociados al color Rosado", names.arg = adjetivos, xlab = "Adjetivos", ylab = "Frecuencia del Adjetivo", col = colors, cex.axis=0.7, cex.names=0.7, las=2)
+
+
+#Cafe
+
+temp <- sort(ColorAdjective$BROW[ColorAdjective$BROW>0], decreasing = T)
+adjetivos <- rownames(ColorAdjective[order(ColorAdjective$BROW, decreasing = T),])[1:length(temp)]
+adjetivos <- c( "otros",adjetivos[1:12])
+temp <- c(sum(temp[13:length(temp)]),temp[1:12])
+
+
+# Create the bar chart
+barplot(temp, main = "Perfil de frecuencia adjetivos asociados al color Café", names.arg = adjetivos, xlab = "Adjetivos", ylab = "Frecuencia del Adjetivo", col = colors, cex.axis=0.7, cex.names=0.7, las=2)
+
+#Purpura
+
+temp <- sort(ColorAdjective$PURP[ColorAdjective$PURP>0], decreasing = T)
+adjetivos <- rownames(ColorAdjective[order(ColorAdjective$PURP, decreasing = T),])[1:length(temp)]
+adjetivos <- c( "otros",adjetivos[1:10])
+temp <- c(sum(temp[11:length(temp)]),temp[1:10])
+
+
+# Create the bar chart
+barplot(temp, main = "Perfil de frecuencia adjetivos asociados al color Purpura", names.arg = adjetivos, xlab = "Adjetivos", ylab = "Frecuencia del Adjetivo", col = colors, cex.axis=0.7, cex.names=0.7, las=2)
+
+#Negro
+
+temp <- sort(ColorAdjective$BLAC[ColorAdjective$BLAC>0], decreasing = T)
+adjetivos <- rownames(ColorAdjective[order(ColorAdjective$BLAC, decreasing = T),])[1:length(temp)]
+adjetivos <- c( "otros",adjetivos[1:6])
+temp <- c(sum(temp[7:length(temp)]),temp[1:6])
+
+
+# Create the bar chart
+barplot(temp, main = "Perfil de frecuencia adjetivos asociados al color Negro", names.arg = adjetivos, xlab = "Adjetivos", ylab = "Frecuencia del Adjetivo", col = colors, cex.axis=0.7, cex.names=0.7, las=2)
+
+
+#Naraja
+
+temp <- sort(ColorAdjective$ORAN[ColorAdjective$ORAN>0], decreasing = T)
+adjetivos <- rownames(ColorAdjective[order(ColorAdjective$ORAN, decreasing = T),])[1:length(temp)]
+adjetivos <- c( "otros",adjetivos[1:9])
+temp <- c(sum(temp[9:length(temp)]),temp[1:9])
+
+
+# Create the bar chart
+barplot(temp, main = "Perfil de frecuencia adjetivos asociados al color Naranja", names.arg = adjetivos, xlab = "Adjetivos", ylab = "Frecuencia del Adjetivo", col = colors, cex.axis=0.7, cex.names=0.7, las=2)
+
+
+#Verde
+
+temp <- sort(ColorAdjective$GREE[ColorAdjective$GREE>0], decreasing = T)
+adjetivos <- rownames(ColorAdjective[order(ColorAdjective$GREE, decreasing = T),])[1:length(temp)]
+adjetivos <- c( "otros",adjetivos[1:8])
+temp <- c(sum(temp[9:length(temp)]),temp[1:8])
+
+
+# Create the bar chart
+barplot(temp, main = "Perfil de frecuencia adjetivos asociados al color Verde", names.arg = adjetivos, xlab = "Adjetivos", ylab = "Frecuencia del Adjetivo", col = colors, cex.axis=0.7, cex.names=0.7, las=2)
 
