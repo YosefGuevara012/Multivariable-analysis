@@ -1,5 +1,7 @@
 library(FactoClass)
 library(FactoMineR)
+library(ggplot2)
+library(RColorBrewer)
 data(ColorAdjective)
 
 # Calculo de la tabla de contingecia
@@ -16,6 +18,8 @@ K$sumaF <- suma_row
 suma_col <- append(suma_col, sum(suma_col))
 
 K <- rbind(K,suma_col)
+
+rownames(K) <- c(rownames(ColorAdjective), "Total_C")
 
 # Creacion de la tabla en latex
 # xtable(K)
@@ -70,33 +74,50 @@ colnames(M) <- dim_names
 # Dimension de mejor representacion de la matrix
 
 Blue <- round(sort(M[1,], decreasing=TRUE),2);Blue
-plot(ACS, cex=0.7, axes=c(3,8), title="ACS - Color Azul DIM 3 y DIM 8", selectRow = "cos2 0.9", selectCol = "cos2 0.64")
+plot(ACS, cex=0.7, axes=c(3,8), title="ACS - Color Azul DIM 3 y DIM 8", selectRow = "cos2 0.32", selectCol = "cos2 0.64")
 
 Red <- round(sort(M[2,], decreasing=TRUE),2);Red
-plot(ACS, cex=0.7, axes=c(1,6), title="ACS - Color Rojo DIM 1 y DIM 6", selectRow = "cos2 1", selectCol = "cos2 8.926268e-01")
+plot(ACS, cex=0.7, axes=c(1,6), title="ACS - Color Rojo DIM 1 y DIM 6", selectRow = "cos2 0.6", selectCol = "cos2 8.926268e-01")
 
 
 Yellow <- round(sort(M[3,], decreasing=TRUE),2);Yellow
-plot(ACS, cex=0.7, axes=c(1,5), title="ACS - Color Amarillo DIM 1 y DIM 5", selectRow = "cos2 0.91", selectCol = "cos2 0.91")
+plot(ACS, cex=0.7, axes=c(1,5), title="ACS - Color Amarillo DIM 1 y DIM 5", selectRow = "cos2 0.6", selectCol = "cos2 0.91")
 
 White <- round(sort(M[4,], decreasing=TRUE),2);White
 Pink <- round(sort(M[6,], decreasing=TRUE),2);Pink
-plot(ACS, cex=0.7, axes=c(3,4), title="ACS - Color Rosado y Blanco, DIM 3 y DIM 4", selectRow = "cos2 1", selectCol = "cos2 0.70")
+plot(ACS, cex=0.7, axes=c(3,4), title="ACS - Color Rosado y Blanco, DIM 3 y DIM 4", selectRow = "cos2 0.6", selectCol = "cos2 0.70")
 
 Grey <- round(sort(M[5,], decreasing=TRUE),2);Grey
-plot(ACS, cex=0.7, axes=c(2,10), title="ACS - Color Gris DIM 2 y DIM 10", selectRow = "cos2 1", selectCol = "cos2 0.56")
+plot(ACS, cex=0.7, axes=c(2,10), title="ACS - Color Gris DIM 2 y DIM 10", selectRow = "cos2 0.3", selectCol = "cos2 0.56")
 
 Brown <- round(sort(M[7,], decreasing=TRUE),2);Brown
-plot(ACS, cex=0.7, axes=c(7,9), title="ACS - Color Café DIM 7 y DIM 9", selectRow = "cos2 1", selectCol = "cos2 0.50")
+plot(ACS, cex=0.7, axes=c(7,9), title="ACS - Color Café DIM 7 y DIM 9", selectRow = "cos2 0.3", selectCol = "cos2 0.50")
 
 Purple <- round(sort(M[8,], decreasing=TRUE),2);Purple
-plot(ACS, cex=0.7, axes=c(2,7), title="ACS - Color Purpura DIM 2 y DIM 7", selectRow = "cos2 1", selectCol = "cos2 0.65")
+plot(ACS, cex=0.7, axes=c(2,7), title="ACS - Color Purpura DIM 2 y DIM 7", selectRow = "cos2 0.5", selectCol = "cos2 0.65")
 
 Black <- round(sort(M[9,], decreasing=TRUE),2);Black
-plot(ACS, cex=0.7, axes=c(2,9), title="ACS - Color Negro DIM 2 y DIM 9", selectRow = "cos2 1", selectCol = "cos2 0.65")
+plot(ACS, cex=0.7, axes=c(2,9), title="ACS - Color Negro DIM 2 y DIM 9", selectRow = "cos2 0.6", selectCol = "cos2 0.65")
 
 Orange <- round(sort(M[10,], decreasing=TRUE),2);Orange
-plot(ACS, cex=0.7, axes=c(1,6), title="ACS - Color Naranja DIM 1 y DIM 6", selectRow = "cos2 1", selectCol = "cos2 0.94")
+plot(ACS, cex=0.7, axes=c(1,6), title="ACS - Color Naranja DIM 1 y DIM 6", selectRow = "cos2 0.6", selectCol = "cos2 0.94")
 
 Verde <- round(sort(M[11,], decreasing=TRUE),2);Verde
-plot(ACS, cex=0.7, axes=c(2,4), title="ACS - Color Verde DIM 2 y DIM 4", selectRow = "cos2 1", selectCol = "cos2 0.57")
+plot(ACS, cex=0.7, axes=c(2,4), title="ACS - Color Verde DIM 2 y DIM 4", selectRow = "cos2 0.45", selectCol = "cos2 0.57")
+
+# punto 7
+
+# Agrupamiento de por colores
+
+ACS.hcpc <- HCPC(ACS, cluster.CA = "columns", description = F) 
+
+
+colors <- brewer.pal(n = 12, name = 'Paired')
+temp <- sort(ColorAdjective$BLUE[ColorAdjective$BLUE>0], decreasing = T)
+
+adjetivos <- rownames(ColorAdjective[order(ColorAdjective$BLUE, decreasing = T),])[1:length(temp)]
+
+
+# Create the bar chart
+barplot(temp, main = "Perfiles de frecuencia de valores asociados Color Azul", names.arg = adjetivos, xlab = "Adjetivos", ylab = "Frecuencia Color", col = colors, cex.axis=0.7, cex.names=0.5, las=2)
+
