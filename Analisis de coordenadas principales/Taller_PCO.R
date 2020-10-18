@@ -1,6 +1,6 @@
 library(FactoClass)
 library(RColorBrewer)
-
+library(ggplot2)
 load("~/Esp_Estadistica/Analisis multivariado/Multivariable-analysis/Analisis de coordenadas principales/disCultuLatino.Rda")
 ACO <- dudi.pco(d = dis, scannf = FALSE, nf = 4)
 
