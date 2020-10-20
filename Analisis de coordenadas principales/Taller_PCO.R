@@ -40,3 +40,35 @@ plot.dudi(ACO,ex=2,ey=4,infaxes="out",main="Analisis de coordenadas principales 
 
 plot.dudi(ACO,ex=3,ey=4,infaxes="out",main="Analisis de coordenadas principales Dim 3 - Dim 4", Tcol= FALSE)
 
+# AMA 2
+
+ma_dis<-as.matrix(dis)
+ma_dis
+
+n<-nrow(ma_dis)
+n
+
+c<-ncol(ma_dis)
+c
+
+e<-dudi.pco(dis,scannf = F,full = T)
+data.frame(e$eig)
+
+barplot(e$eig)
+
+data.frame(e$co)
+
+data.frame(e$tab)
+
+data.frame(e$l1)
+
+w<-inertia.dudi(e,row.inertia = T,col.inertia = T)
+data.frame(w$row.abs)
+
+summary(w$row.abs)
+
+plot.dudi(e)
+
+plot.dudi(e,1,3)
+
+plot.dudi(e,2,3)

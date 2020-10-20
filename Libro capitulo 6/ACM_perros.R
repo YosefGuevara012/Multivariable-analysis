@@ -43,15 +43,18 @@ for(i in 1:length(k)){
 
 #3 ACM Burt
 
-ACMB <- mjca(DogBreeds, nd = NA)
+ACMB <- mjca(DogBreeds[,-7], nd = NA)
 
 burt <- as.data.frame(ACMB$Burt)
 
-write_xlsx(burt,"C:/Users/yosef/OneDrive/Escritorio/Ruptela/burt_2.xlsx")
+write_xlsx(burt,"C:/Users/yosef/OneDrive/Escritorio/Ruptela/burt.xlsx")
+
+pesos <- c(5, 8, 14)
+barplot(pesos, main="Distribución de razas de perro según su categoría de peso", ylab= "Cantidad de razas", xlab="Categorias de pesos de perros", names.arg = c("Pesado", "Mediano", "Ligero"), col=c(5,4,3), cex.main=0.7, cex.lab=1, cex.sub=1)
 
 # ACM
 
-ACM <- MCA(DogBreeds)
+ACM <- MCA(DogBreeds, quali.sup=c(7))
 plot(ACM, col.ind = "blue", col.var = "red", title = "Analisis de correspondencias múltiples")
 summary(ACM, npc=3)
 
@@ -66,6 +69,7 @@ mean(contrib_Dim1[,1])
 
 # 6 Categorias que tienen un coordenadas más importantes al primer eje y que signo son
 
+cos2_var <- as.matrix(ACM[["var"]][["cos2"]])
 coord_var<- as.matrix(ACM[["var"]][["coord"]])
 
 # 7  ¿Cu ́ales son las razas que se encuentran m ́as alejadas del origen?
@@ -85,6 +89,9 @@ for (i in 1:nrow(coord_ind)){
 distancias <- as.matrix(distancias)
 
 rownames(distancias)<- rownames(coord_ind)
+
+
+
 
 # 10
 
