@@ -1,4 +1,5 @@
 library(FactoClass)
+library(FactoMineR)
 library(MASS)
 library(ade4)
 library(ca)
@@ -42,10 +43,50 @@ for(i in 1:length(k)){
 
 #3 ACM Burt
 
-ACMB <- mjca(DogBreeds[,-7], nd = NA)
+ACMB <- mjca(DogBreeds, nd = NA)
 
 burt <- as.data.frame(ACMB$Burt)
 
 write_xlsx(burt,"C:/Users/yosef/OneDrive/Escritorio/Ruptela/burt_2.xlsx")
 
+# ACM
+
+ACM <- MCA(DogBreeds)
+plot(ACM, col.ind = "blue", col.var = "red", title = "Analisis de correspondencias múltiples")
+summary(ACM, npc=3)
+
+
+# 5 Categorias que tienen una mayor contribucion al primer eje y que signo son
+
+contrib_Dim1 <- as.matrix(ACM[["var"]][["contrib"]])
+
+sort(contrib_Dim1[,1], decreasing = T)
+mean(contrib_Dim1[,1])
+
+
+# 6 Categorias que tienen un coordenadas más importantes al primer eje y que signo son
+
+coord_var<- as.matrix(ACM[["var"]][["coord"]])
+
+# 7  ¿Cu ́ales son las razas que se encuentran m ́as alejadas del origen?
+# ¿Cu ́ales sonsus coordenadas sobre el primer eje
+
+coord_ind<- as.matrix(ACM[["ind"]][["coord"]])
+
+
+distancias <-c()
+
+for (i in 1:nrow(coord_ind)){
+  
+  distancias[i] <- sqrt(coord_ind[i,1]^2 +coord_ind[i,2]^2)
+  
+}
+
+distancias <- as.matrix(distancias)
+
+rownames(distancias)<- rownames(coord_ind)
+
+# 10
+
+plotellipses(ACM)
 
