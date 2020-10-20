@@ -72,3 +72,17 @@ plot.dudi(e)
 plot.dudi(e,1,3)
 
 plot.dudi(e,2,3)
+
+
+distancia <- c()
+
+a <- e[["tab"]][["A1"]]
+b <- e[["tab"]][["A2"]]
+
+for (i in 1:length(a)){
+  
+  distancia[i] <- sqrt(a[i]^2 + b[i]^2)
+}
+
+
+rownames()

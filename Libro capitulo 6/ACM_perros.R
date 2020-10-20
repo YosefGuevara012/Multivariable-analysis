@@ -97,3 +97,16 @@ rownames(distancias)<- rownames(coord_ind)
 
 plotellipses(ACM)
 
+
+
+# coord_var
+
+coord_var_DT <- as.data.frame(coord_var[,1:2])
+hclust(coord_var_DT)
+
+plot(coord_var_DT)
+
+ggplot(coord_var_DT, aes(coord_var_DT[,1], coord_var_DT[,2], col = Species, fill = Species)) +
+  stat_ellipse(geom = "polygon", col = "black", alpha = 0.5) +
+  geom_point(shape = 21, col = "black")
+
