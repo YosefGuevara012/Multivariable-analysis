@@ -84,5 +84,6 @@ for (i in 1:length(a)){
   distancia[i] <- sqrt(a[i]^2 + b[i]^2)
 }
 
+#cosenos cuadrados en porcentaje
+w$row.rel
 
-rownames()

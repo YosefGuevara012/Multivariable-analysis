@@ -40,7 +40,12 @@ for(i in 1:length(k)){
   }
 }
 
+# tabla disyuntiva
 
+distyuntive <- tab.disjonctif.prop(DogBreeds[,-7],seed=NULL,row.w=NULL)
+
+xtable(distyuntive)
+write_xlsx(as.data.frame(distyuntive),"C:/Users/yosef/OneDrive/Escritorio/Ruptela/disyuntive.xlsx")
 #3 ACM Burt
 
 ACMB <- mjca(DogBreeds[,-7], nd = NA)
@@ -70,7 +75,8 @@ mean(contrib_Dim1[,1])
 # 6 Categorias que tienen un coordenadas más importantes al primer eje y que signo son
 
 cos2_var <- as.matrix(ACM[["var"]][["cos2"]])
-coord_var<- as.matrix(ACM[["var"]][["coord"]])
+coord_var<- as.matrix(abs(ACM[["var"]][["coord"]]))
+
 
 # 7  ¿Cu ́ales son las razas que se encuentran m ́as alejadas del origen?
 # ¿Cu ́ales sonsus coordenadas sobre el primer eje
@@ -98,15 +104,4 @@ rownames(distancias)<- rownames(coord_ind)
 plotellipses(ACM)
 
 
-
-# coord_var
-
-coord_var_DT <- as.data.frame(coord_var[,1:2])
-hclust(coord_var_DT)
-
-plot(coord_var_DT)
-
-ggplot(coord_var_DT, aes(coord_var_DT[,1], coord_var_DT[,2], col = Species, fill = Species)) +
-  stat_ellipse(geom = "polygon", col = "black", alpha = 0.5) +
-  geom_point(shape = 21, col = "black")
 
