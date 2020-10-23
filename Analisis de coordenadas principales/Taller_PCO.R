@@ -85,5 +85,8 @@ for (i in 1:length(a)){
 }
 
 #cosenos cuadrados en porcentaje
-w$row.rel
+cos <- w$row.rel
+contrib_rel <- cbind(cos[,1:2],rowSums(abs(cos[,1:2])))
+
+xtable(contrib_rel)
 

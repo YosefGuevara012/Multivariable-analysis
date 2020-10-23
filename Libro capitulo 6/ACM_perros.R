@@ -54,7 +54,7 @@ burt <- as.data.frame(ACMB$Burt)
 
 write_xlsx(burt,"C:/Users/yosef/OneDrive/Escritorio/Ruptela/burt.xlsx")
 
-pesos <- c(5, 8, 14)
+pesos <- c(5, 14, 8)
 barplot(pesos, main="Distribución de razas de perro según su categoría de peso", ylab= "Cantidad de razas", xlab="Categorias de pesos de perros", names.arg = c("Pesado", "Mediano", "Ligero"), col=c(5,4,3), cex.main=0.7, cex.lab=1, cex.sub=1)
 
 # ACM
