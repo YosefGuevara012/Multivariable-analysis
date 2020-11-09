@@ -1,0 +1,126 @@
+---
+title: "ACS vs ACM"
+output: html_notebook
+---
+
+Loading the libraries
+
+```{r}
+library(FactoClass)
+library(FactoMineR)
+library(tidyverse)
+```
+
+Loading data
+
+```{r}
+data("admi")
+head(admi)
+```
+
+Doing ACS
+
+```{r}
+# Preparing the data for do a CA 
+
+carr <- admi$carr
+estr <- admi$estr
+
+admi_CA <- as.data.frame(cbind(carr,estr))
+
+# Performing an CA
+
+ACS <- CA(admi_CA)
+
+
+```
+
+Doing MCA
+
+```{r}
+
+# Preparing an ACM to to MCA
+admi_ACM<-  admi %>% select(carr,estr)
+
+# performing a MCA
+ACM <- MCA(admi_ACM)
+
+```
+
+Disjunctive table
+
+```{r}
+disjunctive <- tab.disjonctif.prop(admi_ACM,seed=NULL,row.w=NULL)
+head(disjunctive)
+
+```
+number of rows disjuntive table
+
+```{r}
+nrow(disjunctive)
+```
+
+number of col disjuntive table
+```{r}
+
+ncol(disjunctive)
+```
+
+number of dimentions MCA
+
+```{r}
+summary(ACM)
+
+```
+
+
+Burt table
+
+```{r}
+library(GDAtools)
+burt_table <- burt(admi_ACM)
+```
+
+number of rows burt table
+
+```{r}
+
+nrow(burt_table)
+
+```
+
+number of columns burt table
+
+```{r}
+
+ncol(burt_table)
+```
+
+
+variance by dimentions MCA
+
+```{r}
+
+variance <- ACM$eig[,2]
+variance
+```
+
+Acumulative variance
+
+```{r}
+variance_acum <- ACM$eig[,3]
+variance_acum
+```
+
+HomeWork_code
+
+```{r}
+
+```
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
