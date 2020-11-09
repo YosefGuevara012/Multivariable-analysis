@@ -1,0 +1,166 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+library(FactoClass)
+data("admi")
+```
+
+
+Homework CA vs CMA
+
+
+# Tablas de contingencia y de frecuencias relativas de los admitidos
+
+
+```{r}
+
+#contingency table
+
+K <- unclass ( table ( admi $carr , admi $ estr ));
+F <-K/ sum (K)* 100; # o F <-prop . table (K)*100 , en porcentaje
+Dn <-diag ( rowSums (F ));
+Dp <-diag ( colSums (F ));
+tabs <- plotct (K, tables = TRUE ); # tabla con plotct { FactoClass }
+xtable ( tabs $ctm , digits = rep (0 ,5));
+xtable ( tabs $ ctm * 100 / sum(K), digits = rep (1 ,5));
+
+```
+
+
+
+```{r}
+plotct (K," row "); # plotct es una funcion de FactoClass
+tabs <- plotct (K," col ",tables = TRUE );
+# para exportar la grafica a xfig , para su edicion
+#dev . print ( device = xfig , file =" perfilEstratos .fig ")
+# tablas de perfiles en formato tabular para LaTeX
+xtable ( cbind ( tabs $perR , suma = rowSums ( tabs $ perR )),
+digits = rep (1 ,5));
+xtable ( rbind ( tabs $perC , suma = colSums ( tabs $ perC )),
+digits = rep (1 ,5));
+```
+
+
+```{r}
+
+acs <-dudi.coa (K, scannf = FALSE )
+plot (acs , Tcol =FALSE , xlim =c( -0.7 ,0.3) , cframe =1)
+
+```
+```{r}
+A <- matrix( c(5.7, 5.9, 2.6, 6.0, 6.2, 2.7, 6.6, 6.8, 3.0, 7.4, 7.7, 3.4, 4.1,4.2,1.8,4.8,5.0,2.2,5.7,5.9,2.6), ncol=3, byrow = F)
+
+
+Inercia <- sum(round(F-A, digits = 1)^2/A);Inercia/100
+```
+
+
+```{r}
+library(FactoMineR)
+ACSF <- CA(table ( admi $carr , admi $ estr ))
+
+```
+
+```{r}
+
+Y <-admi [,c (1,9)]
+# Para tabla del texto , registros multiplos de 25
+Z <- acm.disjonctif(Y)
+```
+
+# Gravity center
+
+```{r}
+
+g <- colSums (Z)/ nrow (Z)/4;g
+xtable ( data.frame (t(g)*100) , digits = rep (1 ,11))
+
+```
+
+Distance table
+
+```{r}
+n <-nrow (Z); Dp <-diag ( colSums (Z)); s <-ncol (Y);
+X <-sqrt (n/s)*as.matrix (Z) %*%solve ( sqrt (Dp ));
+selin <-seq (25 ,445 ,25);
+Dis <-dist (X[selin ,]); round (as.dist (Dis ) ,1)
+```
+
+
+Inertia cloud of points
+
+```{r}
+
+p <- ncol(Z);p
+s <- ncol(admi [,c (1,9)]);s
+
+cloud <- p/s - 1; cloud
+
+```
+
+Burt table
+```{r}
+library("GDAtools")
+burt<- burt(admi [,c (1,9)])
+xtable( burt)
+```
+ACM
+
+```{r}
+
+acm <- MCA(Y, ncp = 2)
+
+
+```
+
+
+plot ACM
+
+```{r}
+
+plot(acm, invisible = c("var"),  col.ind = "blue", title = "Representación  nube de puntos ACM individuos")
+
+```
+
+```{r}
+
+
+plot(acm, invisible = c("ind"),  col.var = "red", title = "Representación nube de puntos ACM Variables")
+
+```
+
+benzecri
+
+```{r}
+
+acmf <-dudi.acm (Y, scannf =FALSE ,nf =3)
+barplot ( acmf$eig , cex.axis =0.6)
+dev.print ( device = xfig , file =" ACMadmiValP .fig ")
+eiglst <-data.frame (vp= acm$eig , porce = acmf$ eig* 100/ sum( acmf$ eig ),
+acupor = cumsum (acmf $ eig)*100/sum(acmf$ eig))
+xtable ( eiglst[,c(1,4,3)]) # tabla en formato LaTeX
+```
+```{r}
+s <- 2
+eig8 <-acmf$eig [1:8]
+tau <-(s/(s -1))^2 *(eig8 -(1 /s ))^2
+ptau <-tau / sum ( tau )* 100;ptau
+```
+
+```{r}
+barplot(ptau)
+```
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
