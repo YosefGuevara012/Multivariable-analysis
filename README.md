@@ -18,7 +18,7 @@ This repository contains all the workshops, labs and test created for this class
 5. Application and implementations of MCA (Multiple correspondence analysis).
 
    - MCA as a PCA.
-   - CSA vs MCA.
+   - SCA vs MCA.
    
 6. Classification methods.
 
