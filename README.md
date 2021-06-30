@@ -27,7 +27,7 @@ This repository contains all the workshops, labs and test created for this class
    - Clafication based in coordinates.
    - Automatic class clasification.
 
-## Adtionial References
+## Aditionial References
 
     - Exploratory Multivariate Analysis by Example Using R, François Husson et al (Highly recommended)
     - Analisis estadıstico de datos multivariados - LUIS GUILLERMO DIAZ MONROY (Spanish)(Also very good)
